@@ -2,12 +2,13 @@ doctype html
 html(lang="en")
   head
     title!= title
-    meta(name="viewport" content="width=device-width, initial-scale=1")
-    link(rel="stylesheet" href="/assets/css/bootstrap.min.css")
-    link(rel="stylesheet" href="/assets/css/app.css")
-    script(type="text/javascript" src="/assets/js/jquery-2.1.1.min.js")
-    script(type="text/javascript" src="/assets/js/bootstrap.js")
-    script(type="text/javascript").
+    meta(charset="utf-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    link(rel="stylesheet", href="/assets/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/assets/css/app.css")
+    script(type="text/javascript", src="/assets/js/jquery-2.1.1.min.js")
+    script(type="text/javascript", src="/assets/js/bootstrap.js")
+    script.
       function checkHeadline(selected) {
         //<3 jade
         var isReal = #{isReal};
@@ -21,7 +22,7 @@ html(lang="en")
         $('#answerModal').modal('toggle');
       }
   body
-    .modal.fade(id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel" aria-hidden="true")
+    .modal.fade(id="answerModal", tabindex="-1", role="dialog", aria-labelledby="answerModalLabel", aria-hidden="true")
       .modal-dialog
         .modal-content
           .modal-header
@@ -39,10 +40,10 @@ html(lang="en")
           Which subreddit did the following headline come from?
         h2!=headline
         br
-        p
-          a.btn.btn-lg.btn-block.btn-success(id="t" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;").
+        div.btn-group-vertical.btn-block
+          a.btn.btn-lg.btn-block.btn-success(id="t").
             r/NotTheOnion
-          a.btn.btn-lg.btn-block.btn-danger(id="f" style="border-top-left-radius: 0; border-top-right-radius: 0; margin-top: 0;").
+          a.btn.btn-lg.btn-block.btn-danger(id="f").
             r/TheOnion
       p Headlines last updated #{updateTimeAgo}.
       if !isPerm
@@ -54,7 +55,7 @@ html(lang="en")
       a.btn.btn-xs.btn-default(href="http://github.com/tma02")
         span.glyphicon.glyphicon-heart
         =" tma02"
-  script(type="text/javascript").
+  script.
     $('#t').click(function() {
       checkHeadline(true);
     });
