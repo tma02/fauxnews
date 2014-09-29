@@ -3,6 +3,7 @@ var express = require('express');
 var http = require('http');
 var uuid = require('uuid');
 var chance = require('chance')();
+var crypto = require('crypto');
 var schedule = require('node-schedule');
 var moment = require('moment');
 
@@ -98,9 +99,9 @@ function getRedditJson(url, headlineArray) {
                     return;
                 }
                 e.data.title = e.data.title.split(' | The Onion')[0];
-                var uuidStr = uuid.v4();
-                headlineArray[uuidStr] = {
-                    uuid:  uuidStr,
+                var hashStr = crypto.createHash("md5").update(e.data.title + e.data.url).digest("hex");
+                headlineArray[hashStr] = {
+                    uuid:  hashStr,
                     title: e.data.title,
                     url:   e.data.url
                 };
