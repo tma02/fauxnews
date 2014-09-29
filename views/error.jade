@@ -1,0 +1,17 @@
+doctype html
+html(lang="en")
+  head
+    title!= title
+    link(rel="stylesheet" href="/assets/css/bootstrap.min.css")
+    link(rel="stylesheet" href="/assets/css/app.css")
+  body
+    .container
+      .header
+        h3.text-muted!=title
+      .jumbotron
+        h2!=errorTitle
+        p.lead!=errorMessage
+        br
+        p
+          a.btn.btn-primary(href="/").
+            Look at another headline

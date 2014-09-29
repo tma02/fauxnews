@@ -1,0 +1,19 @@
+{
+  "name": "faux-news",
+  "description": "Headline guessing game",
+  "version": "0.0.1",
+  "author": "tuogex",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "private": true,
+  "dependencies": {
+    "chance": "^0.6.1",
+    "express": "4.x",
+    "jade": "^1.7.0",
+    "moment": "^2.8.3",
+    "node-schedule": "^0.1.13",
+    "uuid": "^1.4.2"
+  }
+}

@@ -1,0 +1,63 @@
+doctype html
+html(lang="en")
+  head
+    title!= title
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" href="/assets/css/bootstrap.min.css")
+    link(rel="stylesheet" href="/assets/css/app.css")
+    script(type="text/javascript" src="/assets/js/jquery-2.1.1.min.js")
+    script(type="text/javascript" src="/assets/js/bootstrap.js")
+    script(type="text/javascript").
+      function checkHeadline(selected) {
+        //<3 jade
+        var isReal = #{isReal};
+        if (selected == isReal) {
+          $('#answerModalBody').html('<h2 style="margin-top: 0;">Nice!</h2>');
+        }
+        else {
+          $('#answerModalBody').html('<h2 style="margin-top: 0;">Sorry!</h2>');
+        }
+        $('#answerModalBody').append("The headline was " + (isReal ? "real" : "fake") + ".");
+        $('#answerModal').modal('toggle');
+      }
+  body
+    .modal.fade(id="answerModal" tabindex="-1" role="dialog" aria-labelledby="answerModalLabel" aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h4.modal-title(id="answerModalLabel")!=title
+          .modal-body(id="answerModalBody")
+          .modal-footer
+            a.btn.btn-primary(href=url)="Read the full article"
+            a.btn.btn-primary(href="/")="Look at another headline"
+            a.btn.btn-primary(href="/h/#{uuid}")="Get a link for this headline"
+    .container
+      .header
+        h3.text-muted!=title
+      .jumbotron
+        p.lead.
+          Which subreddit did the following headline come from?
+        h2!=headline
+        br
+        p
+          a.btn.btn-lg.btn-block.btn-success(id="t" style="border-bottom-left-radius: 0; border-bottom-right-radius: 0;").
+            r/NotTheOnion
+          a.btn.btn-lg.btn-block.btn-danger(id="f" style="border-top-left-radius: 0; border-top-right-radius: 0; margin-top: 0;").
+            r/TheOnion
+      p Headlines last updated #{updateTimeAgo}.
+      if !isPerm
+        a.btn.btn-xs.btn-primary(href="/h/#{uuid}").
+          Get link for this headline
+      else
+        p Note: This headline link will expire when the headlines are updated every hour.
+      =" "
+      a.btn.btn-xs.btn-default(href="http://github.com/tma02")
+        span.glyphicon.glyphicon-heart
+        =" tma02"
+  script(type="text/javascript").
+    $('#t').click(function() {
+      checkHeadline(true);
+    });
+    $('#f').click(function() {
+      checkHeadline(false);
+    });
