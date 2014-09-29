@@ -2,7 +2,7 @@
   "name": "faux-news",
   "description": "Headline guessing game",
   "version": "0.0.1",
-  "author": "tuogex",
+  "author": "tma02",
   "main": "main.js",
   "scripts": {
     "start": "node main.js"
