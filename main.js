@@ -1,4 +1,3 @@
-//RmF1eCBOZXdzDQppIDwzIGJhc2U2NA==
 var express = require('express');
 var http = require('https');
 var uuid = require('uuid');
@@ -81,7 +80,6 @@ app.get('/assets/*', function(req, res) {
 });
 
 app.listen(process.env.PORT || 80);
-console.log("You sir, are running some pretty edgy code.");
 
 updateHeadlines();
 
@@ -94,7 +92,6 @@ function getRedditJson(url, headlineArray) {
         res.on('end', function() {
             var jsonRes = JSON.parse(body);
             jsonRes.data.children.forEach(function(e) {
-                //hacky stuff; sorry boss
                 if (e.data.url.split('://www.reddit.com').length == 2) {
                     return;
                 }
