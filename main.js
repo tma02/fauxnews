@@ -98,7 +98,9 @@ function getRedditJson(url, headlineArray) {
                 if (e.data.url.split('://www.reddit.com').length == 2) {
                     return;
                 }
+                // clean up title a little
                 e.data.title = e.data.title.split(' | The Onion')[0];
+                e.data.title = e.data.title.split(': ').slice(-1)[0].trim();
                 var hashStr = crypto.createHash("md5").update(e.data.title + e.data.url).digest("hex");
                 headlineArray[hashStr] = {
                     uuid:  hashStr,
