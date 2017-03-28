@@ -118,8 +118,8 @@ function updateHeadlines() {
     trueHeadlines = {};
     fakeHeadlines = {};
     
-    getRedditJson('http://www.reddit.com/r/nottheonion/.json', trueHeadlines);
-    getRedditJson('http://www.reddit.com/r/theonion/.json', fakeHeadlines);
+    getRedditJson('https://www.reddit.com/r/nottheonion/.json', trueHeadlines);
+    getRedditJson('https://www.reddit.com/r/theonion/.json', fakeHeadlines);
     
     lastUpdate = moment();
     
