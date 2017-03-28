@@ -80,7 +80,7 @@ app.get('/assets/*', function(req, res) {
     res.sendFile(__dirname + '/assets/' + req.params[0]);
 });
 
-app.listen(80);
+app.listen(process.env.PORT || 80);
 console.log("You sir, are running some pretty edgy code.");
 
 updateHeadlines();
