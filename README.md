@@ -4,7 +4,7 @@ fauxnews
 A headline guessing game written in node.js with the help of express and jade.
 This pulls headlines from the subreddits r/NotTheOnion and r/TheOnion.
 
-#Running
+## Development
 Clone the repo
 
 Install the required dependencies
