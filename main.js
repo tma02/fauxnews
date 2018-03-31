@@ -1,3 +1,5 @@
+require('./arrayIncludesPolyfill.js');
+
 var express = require('express');
 var http = require('https');
 var uuid = require('uuid');
@@ -11,26 +13,35 @@ var app = express();
 var trueHeadlines = {};
 var fakeHeadlines = {};
 
+var readTrueHeadlines = {};
+var readFakeHeadlines = {};
+var scores = {};
+
+app.use(require('cookie-parser')());
+
 app.engine('jade', require('jade').__express);
 app.set('view engine', 'jade');
 app.set('views', './views');
 
 app.get('/', function(req, res) {
+    req.cookies = req.cookies || {};
+    var cid = req.cookies.cid;
     var headline;
     var real = chance.bool();
-    
+
     if (real) {
-        headline = getRandomProperty(trueHeadlines);
+        headline = getRandomProperty(real, trueHeadlines, cid);
     }
     else {
-        headline = getRandomProperty(fakeHeadlines);
+        headline = getRandomProperty(real, fakeHeadlines, cid);
     }
-    
+
     res.render('index', {
         title:         'Faux News',
         headline:      headline.title,
         url:           headline.url,
         uuid:          headline.uuid,
+        cid:           cid || uuid(),
         updateTimeAgo: lastUpdate.fromNow(),
         isPerm:        false,
         isReal:        real
@@ -41,7 +52,7 @@ app.get('/h/*', function(req, res) {
     var trueKeys = Object.keys(trueHeadlines);
     var fakeKeys = Object.keys(fakeHeadlines);
     var headline;
-    
+
     if (trueKeys.indexOf(req.params[0]) != -1) {
         headline = trueHeadlines[req.params[0]];
     }
@@ -56,7 +67,7 @@ app.get('/h/*', function(req, res) {
         });
         return;
     }
-    
+
     res.render('index', {
         title:         'Faux News',
         headline:      headline.title,
@@ -116,21 +127,52 @@ function getRedditJson(url, headlineArray) {
 function updateHeadlines() {
     trueHeadlines = {};
     fakeHeadlines = {};
-    
+
     getRedditJson('https://www.reddit.com/r/nottheonion/.json', trueHeadlines);
     getRedditJson('https://www.reddit.com/r/theonion/.json', fakeHeadlines);
-    
+
     lastUpdate = moment();
-    
+
     console.log('Headlines updated: ' + lastUpdate.format());
 }
 
-function getRandomProperty(obj) {
+function getRandomProperty(real, obj, cid) {
     var keys = Object.keys(obj);
-    return obj[keys[chance.integer({
+    var i = chance.integer({
         min: 0,
         max: keys.length - 1
-    })]];
+    });
+    if (real) {
+        readTrueHeadlines[cid] = readTrueHeadlines[cid] || [];
+        if (readTrueHeadlines[cid].length < keys.length) {
+            while (readTrueHeadlines[cid].includes(i)) {
+                i = chance.integer({
+                    min: 0,
+                    max: keys.length - 1
+                });
+            }
+            readTrueHeadlines[cid].push(i);
+        }
+        else {
+            readTrueHeadlines[cid] = [];
+        }
+    }
+    else if (!real) {
+        readFakeHeadlines[cid] = readFakeHeadlines[cid] || [];
+        if (readFakeHeadlines[cid].length < keys.length) {
+            while (readFakeHeadlines[cid].includes(i)) {
+                i = chance.integer({
+                    min: 0,
+                    max: keys.length - 1
+                });
+            }
+            readFakeHeadlines[cid].push(i);
+        }
+        else {
+            readFakeHeadlines[cid] = [];
+        }
+    }
+    return obj[keys[i]];
 }
 
 var reloadRule = new schedule.RecurrenceRule();
